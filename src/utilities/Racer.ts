@@ -5,7 +5,7 @@ import Scene from '../scenes/Scene.js';
 import MouseListener from './MouseListener.js';
 import Start from '../scenes/Start.js';
 
-export default class Racer extends Game {
+export default class ColorGa extends Game {
   private canvas: HTMLCanvasElement;
 
   private keyListener: KeyListener;
@@ -67,6 +67,5 @@ export default class Racer extends Game {
       context.fillText(`X - ${(MouseListener.mouseCoordinates.x / window.innerWidth).toFixed(3)}`, window.innerWidth / 20, window.innerHeight / 1.02);
       context.fillText(`Y - ${(MouseListener.mouseCoordinates.y / window.innerHeight).toFixed(3)}`, window.innerWidth / 10, window.innerHeight / 1.02);
     }
-    // CanvasUtil.writeText(canvas, `fps: ${}`)
   }
 }

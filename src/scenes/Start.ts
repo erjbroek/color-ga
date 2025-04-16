@@ -1,3 +1,4 @@
+import CanvasUtil from '../utilities/CanvasUtil.js';
 import KeyListener from '../utilities/KeyListener.js';
 import Scene from './Scene.js';
 
@@ -12,7 +13,7 @@ export default class Start extends Scene {
    * @param keyListener - used to listen to the players keyboard inputs
    */
   public processInput(keyListener: KeyListener): void {
-    throw new Error('Method not implemented.');
+
   }
 
   /**
@@ -22,7 +23,6 @@ export default class Start extends Scene {
    * @returns The current scene.
    */
   public update(elapsed: number): Scene {
-    console.log(`Elapsed time: ${elapsed}`);
     return this;
   }
 
@@ -32,6 +32,6 @@ export default class Start extends Scene {
    * @param canvas is the canvas the items are rendered to
    */
   public render(canvas: HTMLCanvasElement): void {
-    throw new Error('Method not implemented.');
+
   }
 }

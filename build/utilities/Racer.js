@@ -3,7 +3,7 @@ import CanvasUtil from './CanvasUtil.js';
 import KeyListener from './KeyListener.js';
 import MouseListener from './MouseListener.js';
 import Start from '../scenes/Start.js';
-export default class Racer extends Game {
+export default class ColorGa extends Game {
     canvas;
     keyListener;
     mouseListener;
