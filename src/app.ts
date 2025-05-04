@@ -1,5 +1,5 @@
 import { GameLoop } from './GameLoop.js';
-import ColorGa from './utilities/Racer.js';
+import ColorGa from './utilities/ColorGa.js';
 
 const gameCanvas = document.getElementById('game') as HTMLCanvasElement;
 const game = new ColorGa(gameCanvas);
