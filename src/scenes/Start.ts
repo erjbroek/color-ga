@@ -3,9 +3,14 @@ import CanvasUtil from '../utilities/CanvasUtil.js';
 import KeyListener from '../utilities/KeyListener.js';
 import Agent from '../misc/Agent.js';
 import Scene from './Scene.js';
+import Button from '../misc/Button.js';
 
 export default class Start extends Scene {
   private algoritm: GenAlgorithm = new GenAlgorithm(400);
+
+  private manualButton: Button = new Button(this.algoritm.secondaryColor, 'Manual evo', window.innerWidth * 0.78, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04)
+
+  private autoButton: Button = new Button(this.algoritm.secondaryColor, 'auto evo', window.innerWidth * 0.87, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04)
 
   public constructor() {
     super();
@@ -18,7 +23,12 @@ export default class Start extends Scene {
    * @param keyListener - used to listen to the players keyboard inputs
    */
   public processInput(keyListener: KeyListener): void {
-
+    if (this.manualButton.processInput()) {
+      this.autoButton.pressed = !this.manualButton.pressed;
+    }
+    if (this.autoButton.processInput()) {
+      this.manualButton.pressed = !this.autoButton.pressed;
+    }
   }
 
   /**
@@ -42,5 +52,7 @@ export default class Start extends Scene {
       agent.render(canvas);
     });
     this.algoritm.renderTarget(canvas);
+    this.manualButton.render(canvas, this.algoritm.getColors().targetColor, this.algoritm.getColors().secondaryColor);
+    this.autoButton.render(canvas, this.algoritm.getColors().targetColor, this.algoritm.getColors().secondaryColor)
   }
 }
