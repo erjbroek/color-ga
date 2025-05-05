@@ -190,19 +190,6 @@ export default class CanvasUtil {
         }
         throw new Error('Unable to get canvas context');
     }
-    static drawCar(canvas, dx, dy, width, height, rotation, red, green, blue, opacity, isPlayer = false) {
-        const ctx = CanvasUtil.getCanvasContext(canvas);
-        ctx.save();
-        ctx.translate(dx, dy);
-        ctx.rotate((rotation * Math.PI) / 180);
-        ctx.beginPath();
-        ctx.rect(-width / 2, -height / 2, width, height);
-        ctx.closePath();
-        ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
-        ctx.globalAlpha = opacity;
-        ctx.fill();
-        ctx.restore();
-    }
     static rotateImage(canvas, image, degrees) {
         const ctx = CanvasUtil.getCanvasContext(canvas);
         ctx.translate(canvas.width / 2, canvas.height / 2);

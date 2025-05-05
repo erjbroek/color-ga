@@ -1,7 +1,6 @@
 import CanvasUtil from '../utilities/CanvasUtil.js';
 import MouseListener from '../utilities/MouseListener.js';
 import { hexToRgb, rgbToHex } from '../utilities/ColorUtils.js';
-import GenAlgorithm from './GenAlgorithm.js';
 
 export default class Button {
   private color: { r: number, g:number, b:number };
@@ -52,6 +51,19 @@ export default class Button {
     return this.pressed;
   }
 
+  /**
+   * Renders the button on the canvas with its current state and colors.
+   *
+   * @param canvas - The canvas element to render on.
+   * @param targetColor - The color to display when the button is pressed.
+   * @param targetColor.r - The red component of the target color (0-255).
+   * @param targetColor.g - The green component of the target color (0-255).
+   * @param targetColor.b - The blue component of the target color (0-255).
+   * @param secondaryColor - The secondary color used for text rendering.
+   * @param secondaryColor.r - The red component of the secondary color (0-255).
+   * @param secondaryColor.g - The green component of the secondary color (0-255).
+   * @param secondaryColor.b - The blue component of the secondary color (0-255).
+   */
   public render(canvas: HTMLCanvasElement, targetColor: { r: number; g: number; b: number }, secondaryColor: { r: number; g: number; b: number }) {
     CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, this.color.r, this.color.g, this.color.b, 1, 10);
     CanvasUtil.drawRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, this.color.r, this.color.g, this.color.b, 1, 10, 10);

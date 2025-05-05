@@ -113,7 +113,7 @@ export default class CanvasUtil {
    * @param fontFamily font family to use when writing text
    * @param fontSize font size in pixels
    * @param color colour of text to write
-   * @param fontWeight
+   * @param fontWeight weight of the letters
    */
   public static writeText(canvas: HTMLCanvasElement, text: string, xCoordinate: number, yCoordinate: number, alignment: CanvasTextAlign = 'center', fontFamily: string = 'sans-serif', fontSize: number = 20, color: string = 'red', fontWeight: number = 10): void {
     const ctx: CanvasRenderingContext2D = CanvasUtil.getCanvasContext(canvas);
@@ -142,8 +142,8 @@ export default class CanvasUtil {
    * @param fontFamily Font family to use when writing text
    * @param fontSize Font size in pixels
    * @param color Colour of the text outline
-   * @param fontWeight Font weight
    * @param outlineThickness Thickness of the text outline
+   * @param fontWeight Font weight
    */
   public static writeTextOutline(
     canvas: HTMLCanvasElement,
@@ -171,7 +171,6 @@ export default class CanvasUtil {
       currentY += fontSize;
     }
   }
-
 
   /**
    * Draw a circle outline on the canvas
@@ -319,7 +318,7 @@ export default class CanvasUtil {
    * @param blue is the blue color value of the rectangle
    * @param opacity is the opacity of the rectangle
    * @param borderRadius is the border radius of the rectangle
-   * @param rotation
+   * @param rotation the rotation in degrees
    */
   public static fillRectangle(canvas: HTMLCanvasElement, dx: number, dy: number, width: number, height: number, red: number = 255, green: number = 255, blue: number = 255, opacity: number = 1, borderRadius: number = 0, rotation: number = 0): void {
     const ctx: CanvasRenderingContext2D = CanvasUtil.getCanvasContext(canvas);
@@ -402,22 +401,6 @@ export default class CanvasUtil {
       return context.getImageData(x, y, 1, 1);
     }
     throw new Error('Unable to get canvas context');
-  }
-
-  public static drawCar(canvas: HTMLCanvasElement, dx: number, dy: number, width: number, height: number, rotation: number, red: number, green: number, blue: number, opacity: number, isPlayer: boolean = false) {
-    const ctx = CanvasUtil.getCanvasContext(canvas);
-    ctx.save();
-
-    ctx.translate(dx, dy); // Render at dx, dy without adjusting for the center
-    ctx.rotate((rotation * Math.PI) / 180);
-    ctx.beginPath();
-    ctx.rect(-width / 2, -height / 2, width, height);
-    ctx.closePath();
-    ctx.fillStyle = `rgba(${red}, ${green}, ${blue}, ${opacity})`;
-    ctx.globalAlpha = opacity;
-    ctx.fill();
-
-    ctx.restore();
   }
 
   /**
