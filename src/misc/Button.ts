@@ -14,25 +14,37 @@ export default class Button {
 
   private isHolding: boolean = false;
 
+  private type: string = '';
 
   private position: { x: number, y: number } = { x: 0, y: 0 };
 
   private dimensions: { width: number, height: number } = { width: 0, height: 0 };
 
-  public constructor(color: { r: number, g:number, b:number }, text: string, posX: number, posY: number, width: number, height: number) {
+  public constructor(color: { r: number, g:number, b:number }, text: string, posX: number, posY: number, width: number, height: number, type: string) {
     this.color = color;
     this.text = text;
     this.position = { x: posX, y: posY };
-    [this.dimensions.width, this.dimensions.height] = [width, height]
+    [this.dimensions.width, this.dimensions.height] = [width, height];
+    this.type = type;
   }
 
   public setColor(color: { r: number, g:number, b:number }) {
     this.color = color;
   }
 
+  /**
+   * @returns boolean indicating if button has been pressed
+   */
   public processInput(): boolean {
-    if (this.isHolding && MouseListener.mouseUp) {
-      this.pressed = !this.pressed;
+    if (this.type === 'click') {
+      this.pressed = false;
+    }
+    if (this.type === 'toggle') {
+      if (this.isHolding && MouseListener.mouseUp) {
+        this.pressed = !this.pressed;
+      }
+    } else if (this.isHolding && MouseListener.mouseUp) {
+      this.pressed = true;
     }
     this.isHover = MouseListener.mouseHover(this.position.x, this.position.y, this.dimensions.width, this.dimensions.height);
     this.isHolding = MouseListener.isButtonDown(0) && this.isHover;

@@ -7,20 +7,30 @@ export default class Button {
     pressed = false;
     isHover = false;
     isHolding = false;
+    type = '';
     position = { x: 0, y: 0 };
     dimensions = { width: 0, height: 0 };
-    constructor(color, text, posX, posY, width, height) {
+    constructor(color, text, posX, posY, width, height, type) {
         this.color = color;
         this.text = text;
         this.position = { x: posX, y: posY };
         [this.dimensions.width, this.dimensions.height] = [width, height];
+        this.type = type;
     }
     setColor(color) {
         this.color = color;
     }
     processInput() {
-        if (this.isHolding && MouseListener.mouseUp) {
-            this.pressed = !this.pressed;
+        if (this.type === 'click') {
+            this.pressed = false;
+        }
+        if (this.type === 'toggle') {
+            if (this.isHolding && MouseListener.mouseUp) {
+                this.pressed = !this.pressed;
+            }
+        }
+        else if (this.isHolding && MouseListener.mouseUp) {
+            this.pressed = true;
         }
         this.isHover = MouseListener.mouseHover(this.position.x, this.position.y, this.dimensions.width, this.dimensions.height);
         this.isHolding = MouseListener.isButtonDown(0) && this.isHover;

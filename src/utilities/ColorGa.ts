@@ -66,7 +66,7 @@ export default class ColorGa extends Game {
     context.font = '20px System-ui White';
     if (KeyListener.isKeyDown('ControlLeft')) {
       CanvasUtil.writeText(this.canvas, `X - ${(MouseListener.mouseCoordinates.x / window.innerWidth).toFixed(3)}`,  window.innerWidth / 20, window.innerHeight / 1.02, 'left', 'system-ui', 20, 'white')
-      CanvasUtil.writeText(this.canvas, `Y - ${(MouseListener.mouseCoordinates.x / window.innerWidth).toFixed(3)}`,  window.innerWidth / 10, window.innerHeight / 1.02, 'left', 'system-ui', 20, 'white')
+      CanvasUtil.writeText(this.canvas, `Y - ${(MouseListener.mouseCoordinates.y / window.innerHeight).toFixed(3)}`,  window.innerWidth / 10, window.innerHeight / 1.02, 'left', 'system-ui', 20, 'white')
     }
   }
 }

@@ -6,11 +6,13 @@ import Scene from './Scene.js';
 import Button from '../misc/Button.js';
 
 export default class Start extends Scene {
-  private algoritm: GenAlgorithm = new GenAlgorithm(400);
+  private algoritm: GenAlgorithm = new GenAlgorithm(10000);
 
-  private manualButton: Button = new Button(this.algoritm.secondaryColor, 'Manual evo', window.innerWidth * 0.78, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04)
+  private manualButton: Button = new Button(GenAlgorithm.secondaryColor, 'Manual evo', window.innerWidth * 0.78, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04, "toggle")
 
-  private autoButton: Button = new Button(this.algoritm.secondaryColor, 'auto evo', window.innerWidth * 0.87, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04)
+  private autoButton: Button = new Button(GenAlgorithm.secondaryColor, 'auto evo', window.innerWidth * 0.87, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04, "toggle")
+
+  private endGenerationButton: Button = new Button(GenAlgorithm.secondaryColor, 'End Generation', window.innerWidth * 0.59, window.innerHeight * 0.9, window.innerWidth * 0.07, window.innerHeight * 0.04, "click")
 
   public constructor() {
     super();
@@ -28,6 +30,10 @@ export default class Start extends Scene {
     }
     if (this.autoButton.processInput()) {
       this.manualButton.pressed = !this.autoButton.pressed;
+    }
+
+    if (this.endGenerationButton.processInput()) {
+      this.algoritm.nextGen()
     }
   }
 
@@ -52,7 +58,8 @@ export default class Start extends Scene {
       agent.render(canvas);
     });
     this.algoritm.renderTarget(canvas);
-    this.manualButton.render(canvas, this.algoritm.getColors().targetColor, this.algoritm.getColors().secondaryColor);
-    this.autoButton.render(canvas, this.algoritm.getColors().targetColor, this.algoritm.getColors().secondaryColor)
+    this.manualButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
+    this.autoButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
+    this.endGenerationButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor)
   }
 }
