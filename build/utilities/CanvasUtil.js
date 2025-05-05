@@ -68,6 +68,19 @@ export default class CanvasUtil {
             currentY += fontSize;
         }
     }
+    static writeTextOutline(canvas, text, xCoordinate, yCoordinate, alignment = 'center', fontFamily = 'sans-serif', fontSize = 20, color = 'red', outlineThickness = 0.1, fontWeight = 10) {
+        const ctx = CanvasUtil.getCanvasContext(canvas);
+        ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = outlineThickness;
+        ctx.textAlign = alignment;
+        const lines = text.split('<br>');
+        let currentY = yCoordinate;
+        for (const line of lines) {
+            ctx.strokeText(line, xCoordinate, currentY);
+            currentY += fontSize;
+        }
+    }
     static drawCircle(canvas, centerX, centerY, radius, red = 255, green = 255, blue = 255, opacity = 1) {
         const ctx = CanvasUtil.getCanvasContext(canvas);
         ctx.beginPath();

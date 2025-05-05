@@ -132,6 +132,48 @@ export default class CanvasUtil {
   }
 
   /**
+   * Write outlined text to the canvas, with line breaks for each occurrence of "<br>"
+   *
+   * @param canvas Canvas to write to
+   * @param text Text to write
+   * @param xCoordinate x-coordinate of the text
+   * @param yCoordinate y-coordinate of the text
+   * @param alignment Align of the text
+   * @param fontFamily Font family to use when writing text
+   * @param fontSize Font size in pixels
+   * @param color Colour of the text outline
+   * @param fontWeight Font weight
+   * @param outlineThickness Thickness of the text outline
+   */
+  public static writeTextOutline(
+    canvas: HTMLCanvasElement,
+    text: string,
+    xCoordinate: number,
+    yCoordinate: number,
+    alignment: CanvasTextAlign = 'center',
+    fontFamily: string = 'sans-serif',
+    fontSize: number = 20,
+    color: string = 'red',
+    outlineThickness: number = 0.1,
+    fontWeight: number = 10,
+  ): void {
+    const ctx: CanvasRenderingContext2D = CanvasUtil.getCanvasContext(canvas);
+    ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+    ctx.strokeStyle = color;
+    ctx.lineWidth = outlineThickness;
+    ctx.textAlign = alignment;
+
+    const lines = text.split('<br>');
+    let currentY = yCoordinate;
+
+    for (const line of lines) {
+      ctx.strokeText(line, xCoordinate, currentY);
+      currentY += fontSize;
+    }
+  }
+
+
+  /**
    * Draw a circle outline on the canvas
    *
    * @param canvas the canvas to draw to
