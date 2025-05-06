@@ -79,16 +79,15 @@ export default class GenAlgorithm {
     // sorting and repositioning the players based on their fitness
     this.colorAgents.sort((a, b) => b.fitness - a.fitness);
     this.colorAgents.forEach((agent: Agent, index: number) => {
+      agent.reposition(1000, index, true);
       agent.index = index;
-      console.log(agent.index, agent.fitness)
-
-      agent.reposition()
+      console.log(agent.index, agent.fitness);
     });
 
     // player selection based on fitness
-    const elitismAgents: Agent[] = []
-    const mutatedAgents: Agent[] = []
-    let newGeneration: Agent[] = []
+    const elitismAgents: Agent[] = [];
+    const mutatedAgents: Agent[] = [];
+    const newGeneration: Agent[] = [];
     if (GenAlgorithm.settings.SelectionMethod == 'roulette') {
       const elitismCount = Math.floor(this.colorAgents.length * GenAlgorithm.settings.ElitismPercentage / 100);
       for (let i = 0; i < elitismCount; i++) {
@@ -122,23 +121,24 @@ export default class GenAlgorithm {
 
     // mutating players outisde of elitism
     mutatedAgents.forEach((agent: Agent) => {
-      agent.mutate()
-    })
+      agent.mutate();
+    });
     newGeneration.push(...elitismAgents);
-    newGeneration.push(...mutatedAgents)
+    newGeneration.push(...mutatedAgents);
 
     this.colorAgents = newGeneration;
-    this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
 
     // // again sort the players by fitness and reposition
-    // this.colorAgents.forEach((agent: Agent) => {
-    //   agent.calculateFitness();
-    // });
-    // this.colorAgents.sort((a, b) => b.fitness - a.fitness);
+    // shuffle the agents first and then sort again
+    this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
+    this.colorAgents.forEach((agent: Agent) => {
+      agent.calculateFitness();
+    });
+    this.colorAgents.sort((a, b) => b.fitness - a.fitness);
 
     this.colorAgents.forEach((agent: Agent, index: number) => {
       agent.index = index;
-      agent.reposition();
+      agent.reposition(2000, index, true);
     });
   }
 

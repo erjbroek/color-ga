@@ -42,13 +42,13 @@ export default class GenAlgorithm {
         });
         this.colorAgents.sort((a, b) => b.fitness - a.fitness);
         this.colorAgents.forEach((agent, index) => {
+            agent.reposition(1000, index, true);
             agent.index = index;
             console.log(agent.index, agent.fitness);
-            agent.reposition();
         });
         const elitismAgents = [];
         const mutatedAgents = [];
-        let newGeneration = [];
+        const newGeneration = [];
         if (GenAlgorithm.settings.SelectionMethod == 'roulette') {
             const elitismCount = Math.floor(this.colorAgents.length * GenAlgorithm.settings.ElitismPercentage / 100);
             for (let i = 0; i < elitismCount; i++) {
@@ -82,9 +82,13 @@ export default class GenAlgorithm {
         newGeneration.push(...mutatedAgents);
         this.colorAgents = newGeneration;
         this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
+        this.colorAgents.forEach((agent) => {
+            agent.calculateFitness();
+        });
+        this.colorAgents.sort((a, b) => b.fitness - a.fitness);
         this.colorAgents.forEach((agent, index) => {
             agent.index = index;
-            agent.reposition();
+            agent.reposition(2000, index, true);
         });
     }
     renderTarget(canvas) {
