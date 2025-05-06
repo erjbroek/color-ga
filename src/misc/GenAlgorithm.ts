@@ -127,17 +127,18 @@ export default class GenAlgorithm {
     newGeneration.push(...elitismAgents);
     newGeneration.push(...mutatedAgents)
 
-    this.colorAgents = newGeneration
+    this.colorAgents = newGeneration;
+    this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
 
+    // // again sort the players by fitness and reposition
+    // this.colorAgents.forEach((agent: Agent) => {
+    //   agent.calculateFitness();
+    // });
+    // this.colorAgents.sort((a, b) => b.fitness - a.fitness);
 
-    // again sort the players by fitness and reposition
-    this.colorAgents.forEach((agent: Agent) => {
-      agent.calculateFitness();
-    });
-    this.colorAgents.sort((a, b) => b.fitness - a.fitness);
     this.colorAgents.forEach((agent: Agent, index: number) => {
       agent.index = index;
-      agent.reposition()
+      agent.reposition();
     });
   }
 
