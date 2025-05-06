@@ -6,7 +6,7 @@ import Scene from './Scene.js';
 import Button from '../misc/Button.js';
 
 export default class Start extends Scene {
-  private algoritm: GenAlgorithm = new GenAlgorithm({MurationRate: 0.3, MutationStrength: 25, PopulationSize: 10000, SelectionMethod: 'roulette', CrossoverPercentage: 0.75, ElitismPercentage: 5});
+  private algoritm: GenAlgorithm = new GenAlgorithm({MurationRate: 0.3, MutationStrength: 25, PopulationSize: 10000, SelectionMethod: 'roulette', CrossoverPercentage: 0.75, ElitismPercentage: 0});
 
   private manualButton: Button = new Button(GenAlgorithm.secondaryColor, 'Manual evo', window.innerWidth * 0.78, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04, "toggle")
 
