@@ -12,7 +12,7 @@ export default class Start extends Scene {
 
   private autoButton: Button = new Button(GenAlgorithm.secondaryColor, 'auto evo', window.innerWidth * 0.87, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04, "toggle")
 
-  private endGenerationButton: Button = new Button(GenAlgorithm.secondaryColor, 'End Generation', window.innerWidth * 0.59, window.innerHeight * 0.9, window.innerWidth * 0.07, window.innerHeight * 0.04, "click")
+  private endGenerationButton: Button = new Button(GenAlgorithm.secondaryColor, 'End Generation', window.innerWidth * 0.59, window.innerHeight * 0.89, window.innerWidth * 0.07, window.innerHeight * 0.04, "click")
 
   public constructor() {
     super();
@@ -60,6 +60,6 @@ export default class Start extends Scene {
     this.algoritm.renderTarget(canvas);
     this.manualButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
     this.autoButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
-    this.endGenerationButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor)
+    this.endGenerationButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
   }
 }

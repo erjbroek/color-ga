@@ -6,7 +6,7 @@ export default class Start extends Scene {
     algoritm = new GenAlgorithm({ MurationRate: 0.3, MutationStrength: 25, PopulationSize: 10000, SelectionMethod: 'roulette', CrossoverPercentage: 0.75, ElitismPercentage: 0 });
     manualButton = new Button(GenAlgorithm.secondaryColor, 'Manual evo', window.innerWidth * 0.78, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04, "toggle");
     autoButton = new Button(GenAlgorithm.secondaryColor, 'auto evo', window.innerWidth * 0.87, window.innerHeight * 0.1, window.innerWidth * 0.07, window.innerHeight * 0.04, "toggle");
-    endGenerationButton = new Button(GenAlgorithm.secondaryColor, 'End Generation', window.innerWidth * 0.59, window.innerHeight * 0.9, window.innerWidth * 0.07, window.innerHeight * 0.04, "click");
+    endGenerationButton = new Button(GenAlgorithm.secondaryColor, 'End Generation', window.innerWidth * 0.59, window.innerHeight * 0.89, window.innerWidth * 0.07, window.innerHeight * 0.04, "click");
     constructor() {
         super();
     }

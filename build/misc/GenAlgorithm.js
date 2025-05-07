@@ -35,11 +35,17 @@ export default class GenAlgorithm {
     }
     update(deltaTime) {
     }
-    nextGen() {
+    shuffleAgents() {
         this.colorAgents.sort(() => Math.random() - 0.5);
         this.colorAgents.forEach((agent, index) => {
             agent.reposition(0, index, false);
         });
+    }
+    nextGen() {
+        const firstOrder = 700;
+        const selection = 500;
+        const lastOrder = 300;
+        this.shuffleAgents();
         this.colorAgents.forEach((agent) => {
             agent.calculateFitness();
         });
@@ -96,9 +102,9 @@ export default class GenAlgorithm {
                         agent.index = index;
                         agent.reposition(200, index, true);
                     });
-                }, 300);
-            }, 500);
-        }, 700);
+                }, lastOrder);
+            }, selection);
+        }, firstOrder);
     }
     renderTarget(canvas) {
         CanvasUtil.fillRectangleWithGradient(canvas, canvas.width * 0.55, canvas.height * 0.03, canvas.width * 0.2, canvas.height * 0.94, [

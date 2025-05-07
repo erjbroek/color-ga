@@ -65,17 +65,17 @@ export default class Button {
    * @param secondaryColor.b - The blue component of the secondary color (0-255).
    */
   public render(canvas: HTMLCanvasElement, targetColor: { r: number; g: number; b: number }, secondaryColor: { r: number; g: number; b: number }) {
-    CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, this.color.r, this.color.g, this.color.b, 1, 10);
-    CanvasUtil.drawRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, this.color.r, this.color.g, this.color.b, 1, 10, 10);
+    CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, this.color.r, this.color.g, this.color.b, 1, 5);
+    CanvasUtil.drawRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, this.color.r, this.color.g, this.color.b, 1, 10, 5);
     if (this.isHover) {
-      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, 255, 255, 255, 0.4, 12);
+      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, 255, 255, 255, 0.4, 6);
     }
     if (this.isHolding) {
-      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, 255, 255, 255, 0.3, 12);
+      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, 255, 255, 255, 0.3, 6);
     }
     if (this.pressed) {
-      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, targetColor.r, targetColor.g, targetColor.b, 1, 12);
-      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, 255, 255, 255, 0.4, 12);
+      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, targetColor.r, targetColor.g, targetColor.b, 1, 6);
+      CanvasUtil.fillRectangle(canvas, this.position.x, this.position.y, this.dimensions.width, this.dimensions.height, 255, 255, 255, 0.4, 6);
     }
 
     const textColor = rgbToHex(secondaryColor.r * 0.5, secondaryColor.g * 0.5, secondaryColor.b * 0.5);

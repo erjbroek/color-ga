@@ -72,16 +72,25 @@ export default class GenAlgorithm {
 
   }
 
-  /**
-   *
-   */
-  public nextGen() {
-    // calculating player fitness
-    // sorting and repositioning the players based on their fitness
+  public shuffleAgents() {
     this.colorAgents.sort(() => Math.random() - 0.5);
     this.colorAgents.forEach((agent, index) => {
       agent.reposition(0, index, false);
     });
+  }
+
+  /**
+   *
+   */
+  public nextGen() {
+    // these are the timings used for the animation
+    const firstOrder: number = 700;
+    const selection: number = 500;
+    const lastOrder: number = 300;
+
+    this.shuffleAgents();
+
+    // calculates fitness and ranks them
     this.colorAgents.forEach((agent: Agent) => {
       agent.calculateFitness();
     });
@@ -96,16 +105,18 @@ export default class GenAlgorithm {
       const elitismAgents: Agent[] = [];
       const mutatedAgents: Agent[] = [];
       setTimeout(() => {
+        // roulette selection method
         if (GenAlgorithm.settings.SelectionMethod === 'roulette') {
+          // elitism agents
           const elitismCount = Math.floor((this.colorAgents.length * GenAlgorithm.settings.ElitismPercentage) / 100);
           for (let i = 0; i < elitismCount; i++) {
             const foundAgent = this.colorAgents[i];
             elitismAgents.push(new Agent(foundAgent.index, foundAgent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
           }
 
+          // the rest of the agents
           const totalFitness = this.colorAgents.reduce((sum, agent) => sum + agent.fitness, 0);
           const selectionPool = this.colorAgents.slice(elitismAgents.length);
-
           for (let i = 0; i < GenAlgorithm.settings.PopulationSize - elitismAgents.length; i++) {
             const randomValue = Math.random() * totalFitness;
             let cumulativeFitness = 0;
@@ -120,6 +131,7 @@ export default class GenAlgorithm {
               }
             }
 
+            // if the selection couldnt find an agent
             if (!selected) {
               const fallback = selectionPool[Math.floor(Math.random() * selectionPool.length)];
               mutatedAgents.push(new Agent(fallback.index, fallback.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
@@ -131,16 +143,17 @@ export default class GenAlgorithm {
         mutatedAgents.forEach((agent: Agent) => {
           agent.mutate();
         });
+
+        // saving agents into next generation
         const newGeneration: Agent[] = [];
         newGeneration.push(...elitismAgents);
         newGeneration.push(...mutatedAgents);
         this.colorAgents = newGeneration;
 
+        // order the agents again
         setTimeout(() => {
           this.colorAgents.sort((a, b) => b.index - a.index);
 
-          // // again sort the players by fitness and reposition
-          // shuffle the agents first and then sort again
           this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
           this.colorAgents.forEach((agent: Agent) => {
             agent.calculateFitness();
@@ -151,9 +164,9 @@ export default class GenAlgorithm {
             agent.index = index;
             agent.reposition(200, index, true);
           });
-        }, 300);
-      }, 500);
-    }, 700);
+        }, lastOrder);
+      }, selection);
+    }, firstOrder);
   }
 
   public renderTarget(canvas: HTMLCanvasElement) {
