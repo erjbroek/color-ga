@@ -16,11 +16,14 @@ export default class GenAlgorithm {
     colorName = '';
     colorAgents = [];
     static numberOfAgents = 0;
+    shouldAnimate = false;
+    animationEnded = true;
+    shouldOrder = true;
     static settings;
     constructor(settings) {
         GenAlgorithm.settings = settings;
-        GenAlgorithm.numberOfAgents = settings.PopulationSize;
-        for (let i = 0; i < settings.PopulationSize; i++) {
+        GenAlgorithm.numberOfAgents = settings.populationSize;
+        for (let i = 0; i < settings.populationSize; i++) {
             this.colorAgents.push(new Agent(i, { red: Math.random() * 255, green: Math.random() * 255, blue: Math.random() * 255 }, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
         }
         this.textHex = `#${((1 << 24) + (GenAlgorithm.targetColor.r << 16) + (GenAlgorithm.targetColor.g << 8) + GenAlgorithm.targetColor.b).toString(16).slice(1).toUpperCase()}`;
@@ -42,38 +45,58 @@ export default class GenAlgorithm {
         });
     }
     nextGen() {
-        const firstOrder = 700;
-        const selection = 500;
-        const lastOrder = 300;
-        this.shuffleAgents();
+        this.animationEnded = false;
+        const firstOrder = 400 * (this.shouldAnimate ? 1 : 0);
+        const selection = 400 * (this.shouldAnimate ? 1 : 0);
+        const lastOrder = 300 * (this.shouldAnimate ? 1 : 0);
+        if (this.shouldAnimate) {
+            this.shuffleAgents();
+        }
+        this.colorAgents.sort((a, b) => b.index - a.index);
+        this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
         this.colorAgents.forEach((agent) => {
             agent.calculateFitness();
         });
-        this.colorAgents.sort((a, b) => b.fitness - a.fitness);
+        if (this.shouldOrder) {
+            this.colorAgents.sort((a, b) => b.fitness - a.fitness);
+        }
+        else {
+            this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
+        }
         this.colorAgents.forEach((agent, index) => {
-            agent.reposition(700, index, true);
             agent.index = index;
+            agent.reposition(400, index, this.shouldAnimate);
         });
         setTimeout(() => {
             const elitismAgents = [];
             const mutatedAgents = [];
             setTimeout(() => {
-                if (GenAlgorithm.settings.SelectionMethod === 'roulette') {
-                    const elitismCount = Math.floor((this.colorAgents.length * GenAlgorithm.settings.ElitismPercentage) / 100);
+                if (GenAlgorithm.settings.selectionMethod === 'roulette') {
+                    const elitismCount = Math.floor((this.colorAgents.length * GenAlgorithm.settings.elitismPercentage) / 100);
                     for (let i = 0; i < elitismCount; i++) {
                         const foundAgent = this.colorAgents[i];
-                        elitismAgents.push(new Agent(foundAgent.index, foundAgent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
+                        if (this.shouldAnimate) {
+                            elitismAgents.push(new Agent(foundAgent.index, foundAgent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
+                        }
+                        else {
+                            elitismAgents.push(new Agent(i, foundAgent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
+                        }
                     }
                     const totalFitness = this.colorAgents.reduce((sum, agent) => sum + agent.fitness, 0);
                     const selectionPool = this.colorAgents.slice(elitismAgents.length);
-                    for (let i = 0; i < GenAlgorithm.settings.PopulationSize - elitismAgents.length; i++) {
+                    for (let i = 0; i < GenAlgorithm.settings.populationSize - elitismAgents.length; i++) {
                         const randomValue = Math.random() * totalFitness;
                         let cumulativeFitness = 0;
                         let selected = false;
                         for (const agent of selectionPool) {
                             cumulativeFitness += agent.fitness;
                             if (cumulativeFitness >= randomValue) {
-                                mutatedAgents.push(new Agent(agent.index, agent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
+                                if (this.shouldAnimate) {
+                                    mutatedAgents.push(new Agent(agent.index, agent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
+                                }
+                                else {
+                                    mutatedAgents.push(new Agent(mutatedAgents.length, agent.genome, { width: window.innerWidth * 0.5, height: window.innerHeight * 0.9 }));
+                                }
                                 selected = true;
                                 break;
                             }
@@ -84,6 +107,9 @@ export default class GenAlgorithm {
                         }
                     }
                 }
+                const averageFitness = (this.colorAgents.reduce((sum, agent) => sum + agent.fitness, 0) / this.colorAgents.length);
+                GenAlgorithm.settings.mutationStrength = Math.max(0, 255 - (averageFitness / 765) * 255) / 2;
+                console.log(averageFitness, GenAlgorithm.settings.mutationStrength);
                 mutatedAgents.forEach((agent) => {
                     agent.mutate();
                 });
@@ -97,11 +123,17 @@ export default class GenAlgorithm {
                     this.colorAgents.forEach((agent) => {
                         agent.calculateFitness();
                     });
-                    this.colorAgents.sort((a, b) => b.fitness - a.fitness);
+                    if (this.shouldOrder) {
+                        this.colorAgents.sort((a, b) => b.fitness - a.fitness);
+                    }
+                    else {
+                        this.colorAgents = this.colorAgents.sort(() => Math.random() - 0.5);
+                    }
                     this.colorAgents.forEach((agent, index) => {
                         agent.index = index;
-                        agent.reposition(200, index, true);
+                        agent.reposition(100, index, this.shouldAnimate);
                     });
+                    this.animationEnded = true;
                 }, lastOrder);
             }, selection);
         }, firstOrder);

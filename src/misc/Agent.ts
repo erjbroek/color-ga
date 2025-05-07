@@ -22,7 +22,7 @@ export default class Agent {
       blue: genome.blue,
     };
 
-    const gridSide = Math.ceil(Math.sqrt(GenAlgorithm.settings.PopulationSize));
+    const gridSide = Math.ceil(Math.sqrt(GenAlgorithm.settings.populationSize));
     this.shape.width = gridSize.width / gridSide;
     this.shape.height = gridSize.height / gridSide;
 
@@ -87,9 +87,16 @@ export default class Agent {
    * Mutates the genome of the agent by adjusting its color values based on the mutation rate and strength.
    */
   public mutate(): void {
-    [this.genome.red, this.genome.green, this.genome.blue].forEach(() => {
-      if (Math.random() >= GenAlgorithm.settings.MurationRate) {
-        this.genome.red += ((Math.random() * 2) - 1) * GenAlgorithm.settings.MutationStrength;
+    [this.genome.red, this.genome.green, this.genome.blue].forEach((_, index) => {
+      if (Math.random() <= GenAlgorithm.settings.mutationRate) {
+        const mutation = ((Math.random() * 2) - 1) * GenAlgorithm.settings.mutationStrength;
+        if (index === 0) {
+          this.genome.red = Math.min(255, Math.max(0, this.genome.red + mutation));
+        } else if (index === 1) {
+          this.genome.green = Math.min(255, Math.max(0, this.genome.green + mutation));
+        } else if (index === 2) {
+          this.genome.blue = Math.min(255, Math.max(0, this.genome.blue + mutation));
+        }
       }
     });
   }
