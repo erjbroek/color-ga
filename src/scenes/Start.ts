@@ -16,10 +16,17 @@ export default class Start extends Scene {
 
   private endGenerationButton: Button = new Button(GenAlgorithm.secondaryColor, 'End Generation', window.innerWidth * 0.78, window.innerHeight * 0.18, window.innerWidth * 0.07, window.innerHeight * 0.04, 'click');
 
-  private manualNextgenTimer: number = 300;
+  private colorPickerColor: string = '#ff0000';
 
   public constructor() {
     super();
+
+    const colorPicker = document.getElementById('colorPicker') as HTMLInputElement;
+
+    colorPicker.addEventListener('input', (event) => {
+      this.colorPickerColor = colorPicker.value;
+      console.log('Selected color:', this.colorPickerColor);
+    });
   }
 
   /**
@@ -52,7 +59,23 @@ export default class Start extends Scene {
    * @returns The current scene.
    */
   public update(elapsed: number): Scene {
+    if (this.autoButton.pressed) {
+      if (this.algoritm.animationEnded) {
+        this.algoritm.nextGen();
+      }
+    }
     return this;
+  }
+
+  /**
+   *
+   * @param canvas
+   */
+  public drawSomething(canvas: HTMLCanvasElement) {
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    ctx.fillStyle = this.colorPickerColor;
+    ctx.fillRect(50, 50, 100, 100);
   }
 
   /**
@@ -67,6 +90,7 @@ export default class Start extends Scene {
       agent.render(canvas);
     });
     this.algoritm.renderTarget(canvas);
+    // CanvasUtil.fillRectangle(canvas, canvas.width * 0.76, canvas.height * 0.03, canvas.width * 0.32, canvas.height * 0.94, 0, 0, 0, 1, 2);
 
     if (this.manualButton.pressed) {
       if (this.algoritm.animationEnded) {
@@ -76,5 +100,7 @@ export default class Start extends Scene {
     }
     this.manualButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
     this.autoButton.render(canvas, GenAlgorithm.targetColor, GenAlgorithm.secondaryColor);
+    this.drawSomething(canvas);
+    // CanvasUtil.
   }
 }

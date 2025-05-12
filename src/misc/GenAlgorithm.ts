@@ -24,11 +24,15 @@ export default class GenAlgorithm {
 
   public static numberOfAgents: number = 0;
 
-  private shouldAnimate: boolean = false;
+  public shouldAnimate: boolean = false;
 
   public animationEnded: boolean = true;
 
-  private shouldOrder: boolean = true;
+  public shouldOrder: boolean = false;
+
+  public useOptimizedMutation: boolean = false;
+
+  private generation: number = 0;
 
   public static settings: {
     mutationRate: number,
@@ -92,6 +96,8 @@ export default class GenAlgorithm {
    */
   public nextGen() {
     this.animationEnded = false;
+    this.generation += 1;
+
     // these are the timings used for the animation
     const firstOrder: number = 400 * (this.shouldAnimate ? 1 : 0);
     const selection: number = 400 * (this.shouldAnimate ? 1 : 0);
@@ -168,11 +174,12 @@ export default class GenAlgorithm {
         }
 
         // mutating players outisde of elitism
-        // GenAlgorithm.settings.mutationStrength = 
-        //   Math.max(0, 255 - );
+
         const averageFitness: number = (this.colorAgents.reduce((sum, agent) => sum + agent.fitness, 0) / this.colorAgents.length);
-        GenAlgorithm.settings.mutationStrength = Math.max(0, 255 - (averageFitness / 765) * 255) / 2;
-        console.log(averageFitness, GenAlgorithm.settings.mutationStrength)
+        if (this.useOptimizedMutation) {
+          GenAlgorithm.settings.mutationStrength = Math.max(0, 255 - (averageFitness / 765) * 255) / 2;
+        }
+        console.log(this.generation, averageFitness, GenAlgorithm.settings.mutationStrength);
         mutatedAgents.forEach((agent: Agent) => {
           agent.mutate();
         });

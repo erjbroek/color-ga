@@ -18,7 +18,9 @@ export default class GenAlgorithm {
     static numberOfAgents = 0;
     shouldAnimate = false;
     animationEnded = true;
-    shouldOrder = true;
+    shouldOrder = false;
+    useOptimizedMutation = false;
+    generation = 0;
     static settings;
     constructor(settings) {
         GenAlgorithm.settings = settings;
@@ -46,6 +48,7 @@ export default class GenAlgorithm {
     }
     nextGen() {
         this.animationEnded = false;
+        this.generation += 1;
         const firstOrder = 400 * (this.shouldAnimate ? 1 : 0);
         const selection = 400 * (this.shouldAnimate ? 1 : 0);
         const lastOrder = 300 * (this.shouldAnimate ? 1 : 0);
@@ -108,8 +111,10 @@ export default class GenAlgorithm {
                     }
                 }
                 const averageFitness = (this.colorAgents.reduce((sum, agent) => sum + agent.fitness, 0) / this.colorAgents.length);
-                GenAlgorithm.settings.mutationStrength = Math.max(0, 255 - (averageFitness / 765) * 255) / 2;
-                console.log(averageFitness, GenAlgorithm.settings.mutationStrength);
+                if (this.useOptimizedMutation) {
+                    GenAlgorithm.settings.mutationStrength = Math.max(0, 255 - (averageFitness / 765) * 255) / 2;
+                }
+                console.log(this.generation, averageFitness, GenAlgorithm.settings.mutationStrength);
                 mutatedAgents.forEach((agent) => {
                     agent.mutate();
                 });
