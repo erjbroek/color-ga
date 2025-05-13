@@ -1,4 +1,5 @@
 import GenAlgorithm from '../misc/GenAlgorithm.js';
+import { hexToRgb } from '../utilities/ColorUtils.js';
 import CanvasUtil from '../utilities/CanvasUtil.js';
 import Scene from './Scene.js';
 import Button from '../misc/Button.js';
@@ -14,8 +15,9 @@ export default class Start extends Scene {
         super();
         const colorPicker = document.getElementById('colorPicker');
         colorPicker.addEventListener('input', (event) => {
-            this.colorPickerColor = colorPicker.value;
             console.log('Selected color:', this.colorPickerColor);
+            const newColor = hexToRgb(colorPicker.value);
+            this.algoritm.setTargetColor({ r: newColor.r, g: newColor.g, b: newColor.b });
         });
     }
     processInput(keyListener) {

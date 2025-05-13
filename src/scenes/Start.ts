@@ -1,4 +1,5 @@
 import GenAlgorithm from '../misc/GenAlgorithm.js';
+import { rgbToHex, hexToRgb } from '../utilities/ColorUtils.js';
 import CanvasUtil from '../utilities/CanvasUtil.js';
 import KeyListener from '../utilities/KeyListener.js';
 import Agent from '../misc/Agent.js';
@@ -24,8 +25,9 @@ export default class Start extends Scene {
     const colorPicker = document.getElementById('colorPicker') as HTMLInputElement;
 
     colorPicker.addEventListener('input', (event) => {
-      this.colorPickerColor = colorPicker.value;
       console.log('Selected color:', this.colorPickerColor);
+      const newColor = hexToRgb(colorPicker.value);
+      this.algoritm.setTargetColor({ r: newColor.r, g: newColor.g, b: newColor.b });
     });
   }
 
